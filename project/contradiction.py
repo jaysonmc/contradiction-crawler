@@ -1,3 +1,6 @@
+# Borrowed from https://github.com/kunalG98/ContradictionDetectionSystem
+# Will fork if this ends up being the source used for contradiction checking
+
 import spacy
 from nltk.corpus import wordnet
 #nlp = spacy.load('en')
