@@ -1,21 +1,15 @@
 from crawler import Crawler
 import sys
+import fire
 
 
-def main():
-
-    crawler = Crawler()
-
-    def getUrl():
-        url = sys.argv[1:]
-        if not url:
-            url = ['https://sara-sabr.github.io/ITStrategy/home.html']
-            print('Defaulting to ' + url[0])
-        return url
-
-    # Run
-    crawler.crawl(getUrl())
+def crawl(url='https://sara-sabr.github.io/ITStrategy/home.html'):
+    Crawler([url])
 
 
-if __name__ == "__main__":
-    main()
+def process():
+    print("Process things")
+
+
+if __name__ == '__main__':
+    fire.Fire()
