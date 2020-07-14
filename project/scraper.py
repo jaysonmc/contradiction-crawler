@@ -3,9 +3,10 @@ from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 from bs4 import BeautifulSoup
 import logging
+import settings
 
 
-class Crawler(CrawlSpider):
+class Scraper(CrawlSpider):
 
     name = 'IT Strategy'
     allowed_domains = ['sara-sabr.github.io']
@@ -17,7 +18,7 @@ class Crawler(CrawlSpider):
     )
 
     def parse_item(self, response):
-        filename = '../output/' + response.url.split("/")[-1]
+        filename = settings.OUTPUT_FOLDER + response.url.split("/")[-1]
 
         parsers = ["html.parser", "html5", "lxml"]
         parseSuccessful = False
