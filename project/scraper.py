@@ -4,6 +4,7 @@ from scrapy.linkextractors import LinkExtractor
 from bs4 import BeautifulSoup
 import logging
 import settings
+import time
 
 
 class Scraper(CrawlSpider):
@@ -18,7 +19,8 @@ class Scraper(CrawlSpider):
     )
 
     def parse_item(self, response):
-        filename = settings.OUTPUT_FOLDER + response.url.split("/")[-1]
+        filename = settings.OUTPUT_FOLDER + \
+            str(time.time()) + "_" + response.url.split("/")[-1]
 
         parsers = ["html.parser", "html5", "lxml"]
         parseSuccessful = False

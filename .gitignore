@@ -1,0 +1,5 @@
+output/*
+__pycache__
+output.txt
+extracttext.py
+extracttext_test.py
