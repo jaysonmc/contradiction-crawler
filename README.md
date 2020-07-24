@@ -6,6 +6,20 @@ University project aimed to detect contradicting statements in text with possibl
 
 Can detect contradicting statements based on the use of verbs which are the antonyms of each other and also for the mismatch in numeric values in the statements.
 
+## To Run
+
+To crawl the site (the raw output is stored in the output folder) type ...
+
+```
+python main.py crawl
+```
+
+To process the crawled content (which will be stored in the processed folder)
+
+```
+python main.py process
+```
+
 # Local Config
 
 Run

@@ -9,12 +9,12 @@ class ProcessText():
     def __init__(self):
         pathlist = Path(settings.OUTPUT_FOLDER).rglob('*.html')
         for path in pathlist:
-            f = open(str(path), "r")
-            contents = f.read()
-            self.tokenizeSentences(contents)
+            output_contents = open(path, "r").read()
+            open(settings.PROCESSED_FOLDER + '/' +
+                 path.name, "w+").write('\n'.join(self.tokenizeSentences(output_contents)))
 
     def tokenizeSentences(self, raw_text):
         nlp = spacy.load("en_core_web_sm")
         doc = nlp(raw_text)
         sentences = [sent.string.strip() for sent in doc.sents]
-        print(sentences)
+        return sentences

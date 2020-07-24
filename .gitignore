@@ -1,4 +1,5 @@
 output/*
+processed/*
 __pycache__
 output.txt
 extracttext.py
