@@ -1,5 +1,6 @@
 import settings
 from pathlib import Path
+from contradiction import exec
 
 class Analyze:
 
@@ -16,14 +17,13 @@ class Analyze:
 
     def scanFile(self, output_lines):
         for firstSentence in output_lines: 
-            print("firstSentence = " + firstSentence)
             self.searchContradictions(firstSentence, output_lines)
 
     def searchContradictions(self, firstSentence, output_lines):
         for secondSentence in output_lines: 
-            print("Comparing ... ")
             print(firstSentence)
-            print("With ... ")
             print(secondSentence)
+            exec(firstSentence, secondSentence)
+            
 
             

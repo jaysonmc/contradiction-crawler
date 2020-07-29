@@ -187,18 +187,7 @@ def antysyn(word):
     # print("Synonym:",set(synonyms))
     print("Antonym:", set(antonyms))
 
-
-# Taking the sentences as input
-#sent1=input("Input the first sentence:")
-#sent2=input("Input the second sentence:")
 nlp = en_core_web_sm.load()
-sent1 = "I slept till noon."
-sent2 = "I woke up early in the morning."
-print_parse_info(nlp, sent1)
-print("\n")
-print_parse_info(nlp, sent2)
-doc1 = nlp(sent1)
-doc2 = nlp(sent2)
 
 # Initializing required variables and lists.
 wrdlist = list()
@@ -212,30 +201,68 @@ verb1 = ""
 verb2 = ""
 num_contr_tracker = 0
 
-# Processing sentence 1
-for token in doc1:
-    if(token.dep_ == "neg"):
-        negdoc1 = 1
-        verb1 += "NOT "
-    # Storing the antonyms of root words
-    if(token.pos_ == "VERB" and token.dep_ == "ROOT"):
-        print(token.text)
-        verb1 += token.lemma_
-        antysyn(token.lemma_)
-        for anton in antonyms:
-            antony.append(anton)
 
-# Processing Sentence 2
-for token in doc2:
-    if(token.dep_ == "neg"):
-        negdoc2 = 1
-        verb2 += "NOT "
-    if(token.pos_ == "VERB" and token.dep_ == "ROOT"):
-        verb2 += token.lemma_
-        if(token.lemma_ in antony):
-            antonym_tracker = 1
+def exec(sent1, sent2):
+    
+    #sent1 = "I slept till noon."
+    #sent2 = "I woke up early in the morning."
 
-# Function for checking negation
+    doc1 = nlp(sent1)
+    doc2 = nlp(sent2)
+
+    print_parse_info(nlp, sent1)
+    print("\n")
+    print_parse_info(nlp, sent2)
+    
+    # Processing sentence 1
+    for token in doc1:
+        if(token.dep_ == "neg"):
+            negdoc1 = 1
+            verb1 += "NOT "
+        # Storing the antonyms of root words
+        if(token.pos_ == "VERB" and token.dep_ == "ROOT"):
+            print(token.text)
+            verb1 += token.lemma_
+            antysyn(token.lemma_)
+            for anton in antonyms:
+                antony.append(anton)
+
+    # Processing Sentence 2
+    for token in doc2:
+        if(token.dep_ == "neg"):
+            negdoc2 = 1
+            verb2 += "NOT "
+        if(token.pos_ == "VERB" and token.dep_ == "ROOT"):
+            verb2 += token.lemma_
+            if(token.lemma_ in antony):
+                antonym_tracker = 1
+
+    x1 = check_words(doc1)
+    print(x1)
+
+    y1 = check_words(doc2)
+    print("Second Sentence:", y1)
+
+    number_contr_tracker = check_values(x1, y1)
+    if(number_contr_tracker == 'Contradiction'):
+        num_contr_tracker = 1
+    else:
+        num_contr_tracker = 0
+
+    if contr_tracker == 1:
+        print("\n", "->", verb1.upper(), "and",
+            verb2.upper(), "can't happen simultaneously.")
+        print("->Antonymity/Negation contradiction FOUND.")
+    else:
+        print("\n->Antonymity/Negation contradiction NOT found.")
+
+    if num_contr_tracker == 1:
+        print("->Numeric Mismatch Contradiction FOUND.")
+    else:
+        print("->Numeric Mismatch Contradiction NOT Found.")
+
+
+    # Function for checking negation
 
 
 def checknegationcontradiction(antonym_tracker, negdoc1, negdoc2):
@@ -326,26 +353,3 @@ def check_values(t1, t2):
             return('Contradiction')
 
 
-x1 = check_words(doc1)
-print(x1)
-
-y1 = check_words(doc2)
-print("Second Sentence:", y1)
-
-number_contr_tracker = check_values(x1, y1)
-if(number_contr_tracker == 'Contradiction'):
-    num_contr_tracker = 1
-else:
-    num_contr_tracker = 0
-
-if contr_tracker == 1:
-    print("\n", "->", verb1.upper(), "and",
-          verb2.upper(), "can't happen simultaneously.")
-    print("->Antonymity/Negation contradiction FOUND.")
-else:
-    print("\n->Antonymity/Negation contradiction NOT found.")
-
-if num_contr_tracker == 1:
-    print("->Numeric Mismatch Contradiction FOUND.")
-else:
-    print("->Numeric Mismatch Contradiction NOT Found.")
