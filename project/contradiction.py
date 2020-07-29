@@ -182,10 +182,12 @@ def antysyn(word):
     # print("Synonym:",set(synonyms))
     print("Antonym:", set(antonyms))
 
-
+## TO-DO Rename function 
 def exec(sent1, sent2):
     
     #sent1 = "I slept till noon."
+        # TO-DO (test): #sent1 = "I slept until early in the morning."
+            # Check if "slept" is antonym for "woke" and that is why it is popping up as a contradicition
     #sent2 = "I woke up early in the morning."
 
     verb1 = ""

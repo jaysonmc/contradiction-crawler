@@ -20,6 +20,12 @@ To process the crawled content (which will be stored in the processed folder)
 python main.py process
 ```
 
+To analyze the crawled content (will output contradictions to console)
+
+```
+python main.py analyze
+```
+
 # Local Config
 
 Run
@@ -27,4 +33,7 @@ Run
 ```
 pip3 install -r requirements.txt
 python3 -m spacy download en
+mkdir nltk_data
+python3 -m nltk.downloader
+    -> install 'all'
 ```
