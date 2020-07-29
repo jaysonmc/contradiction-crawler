@@ -152,6 +152,7 @@ def print_parse_info(nlp, sent):
                  'es': u'┌',
                  'enw': u'┴',
                  'ensw': u'┼',
+                 'ens' : u'├',
                  'esw': u'┬'}
 
     # Convert the character lists into strings.
@@ -169,12 +170,6 @@ def print_parse_info(nlp, sent):
     _print_table(rows)
 
 
-# Antonyms finder function
-synonyms = []
-antonyms = []
-# word="went"
-
-
 def antysyn(word):
     from nltk.corpus import wordnet
     for syn in wordnet.synsets(word):
@@ -187,25 +182,14 @@ def antysyn(word):
     # print("Synonym:",set(synonyms))
     print("Antonym:", set(antonyms))
 
-nlp = en_core_web_sm.load()
-
-# Initializing required variables and lists.
-wrdlist = list()
-antony = list()
-contr_tracker = 0
-antonym_tracker = 0
-
-negdoc1 = 0
-negdoc2 = 0
-verb1 = ""
-verb2 = ""
-num_contr_tracker = 0
-
 
 def exec(sent1, sent2):
     
     #sent1 = "I slept till noon."
     #sent2 = "I woke up early in the morning."
+
+    verb1 = ""
+    verb2 = ""
 
     doc1 = nlp(sent1)
     doc2 = nlp(sent2)
@@ -261,9 +245,7 @@ def exec(sent1, sent2):
     else:
         print("->Numeric Mismatch Contradiction NOT Found.")
 
-
     # Function for checking negation
-
 
 def checknegationcontradiction(antonym_tracker, negdoc1, negdoc2):
     temp_var = negdoc1+negdoc2+antonym_tracker
@@ -271,15 +253,6 @@ def checknegationcontradiction(antonym_tracker, negdoc1, negdoc2):
         return 1
     else:
         return 0
-
-
-# Checking contradiction due to negation
-contr_tracker = checknegationcontradiction(antonym_tracker, negdoc1, negdoc2)
-
-# Finding numerical mismatch
-checklist_more = ['more than ', 'greater than ', 'above']
-checklist_less = ['less than ', 'lesser than ', 'below']
-
 
 def check_words(doc):
     merged_word = ""
@@ -352,4 +325,28 @@ def check_values(t1, t2):
         if(t1 != t2):
             return('Contradiction')
 
+
+# Antonyms finder function
+synonyms = []
+antonyms = []
+# word="went"
+
+nlp = en_core_web_sm.load()
+
+# Initializing required variables and lists.
+wrdlist = list()
+antony = list()
+contr_tracker = 0
+antonym_tracker = 0
+
+negdoc1 = 0
+negdoc2 = 0
+num_contr_tracker = 0
+
+# Checking contradiction due to negation
+contr_tracker = checknegationcontradiction(antonym_tracker, negdoc1, negdoc2)
+
+# Finding numerical mismatch
+checklist_more = ['more than ', 'greater than ', 'above']
+checklist_less = ['less than ', 'lesser than ', 'below']
 
