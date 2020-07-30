@@ -18,6 +18,24 @@ class ProcessText():
             else:
                 return ""
 
+    def isMeaningful(self, token, length):
+
+        isMeaningfulSentence = True
+
+        if (length <= 6 and (token.pos_ == "ADJ" or token.pos_ == "ADP" or token.pos_ == "PROPN" or token.pos_ == "NUM" or token.pos_ == "ADV")):
+            isMeaningfulSentence = False
+            print("token: " + token.text)
+            print("\t Type: " +token.pos_)
+        elif (length == 1):
+            print("token: " + token.text)
+            print("\t Type: " +token.pos_)
+            isMeaningfulSentence = False
+        else:
+            print("token: " + token.text)
+            print("\t Type: " +token.pos_)
+
+        return isMeaningfulSentence
+
     def __removeMeaninglessSentences_helper(self, line):
         nlp = en_core_web_sm.load()
         doc = nlp(line)
@@ -26,14 +44,16 @@ class ProcessText():
         lines = [[] for token in doc]
 
         for token in doc:
-            if ((len(lines)) <= 6 and (token.pos_ == "ADJ" or token.pos_ == "ADP" or token.pos_ == "PROPN" or token.pos_ == "NUM") or (len(lines)) == 1):
-                isMeaningfulSentence = False
-            else:
+            if (self.isMeaningful(token, len(lines))):
                 isMeaningfulSentence = True
+            else:
+                isMeaningfulSentence = False
 
         if (isMeaningfulSentence):
+            print("Meaningful: " + line)
             return line + os.linesep
         else:
+            print("NOT Meaningful: " + line)
             return ""
 
     def tokenizeSentences(self, raw_text):
