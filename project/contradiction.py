@@ -94,6 +94,10 @@ def print_parse_info(nlp, sent):
     num_arrows_left = len(arrows)
     while num_arrows_left > 0:
 
+        print("***********************************")
+        print(str(arrows_with_deps))
+        print("***********************************")
+
         assert len(arrows_with_deps[0])
 
         arrow_index = arrows_with_deps[0].pop()
@@ -195,6 +199,9 @@ def exec(sent1, sent2):
 
     doc1 = nlp(sent1)
     doc2 = nlp(sent2)
+
+    print("sent1 = " + sent1)
+    print("sent2 = " + sent2)
 
     print_parse_info(nlp, sent1)
     print("\n")

@@ -18,42 +18,52 @@ class ProcessText():
             else:
                 return ""
 
-    def isMeaningful(self, token, length):
+    def __isLikelyTitle(self, sentenceLength, token):
+        return (sentenceLength <= 6 and (token.pos_ == "ADJ" or token.pos_ == "ADP" or token.pos_ == "PROPN" or token.pos_ == "NUM" or token.pos_ == "ADV"))
 
-        isMeaningfulSentence = True
+    def __isOneWordSentence(self, sentenceLength, token):
+        return (sentenceLength <= 1)
 
-        if (length <= 6 and (token.pos_ == "ADJ" or token.pos_ == "ADP" or token.pos_ == "PROPN" or token.pos_ == "NUM" or token.pos_ == "ADV")):
-            isMeaningfulSentence = False
-            print("token: " + token.text)
-            print("\t Type: " +token.pos_)
-        elif (length == 1):
-            print("token: " + token.text)
-            print("\t Type: " +token.pos_)
-            isMeaningfulSentence = False
-        else:
-            print("token: " + token.text)
-            print("\t Type: " +token.pos_)
+    def __isOnlyNumberAndPunctuation(self, sentenceLength, token):
+        return (token.pos_ == "NUM"  or token.pos_ == "PUNCT")
 
-        return isMeaningfulSentence
+    def __isMeaningfulSentence_helper(self, func, sentenceLength, doc):
 
-    def __removeMeaninglessSentences_helper(self, line):
+        flag = True
+        
+        for token in doc:
+            if (func(sentenceLength, token)):
+                flag = False
+            else:
+                flag = True
+                break
+        
+        return flag
+            
+
+    def isMeaningfulSentence(self, line):
         nlp = en_core_web_sm.load()
         doc = nlp(line)
-        isMeaningfulSentence = None
+        words = [[] for token in doc]
+        sentenceLength = len(words)
 
-        lines = [[] for token in doc]
+        flag = True
 
-        for token in doc:
-            if (self.isMeaningful(token, len(lines))):
-                isMeaningfulSentence = True
-            else:
-                isMeaningfulSentence = False
+        if(not self.__isMeaningfulSentence_helper(self.__isLikelyTitle, sentenceLength, doc)):
+            return False
 
-        if (isMeaningfulSentence):
-            print("Meaningful: " + line)
+        if(not self.__isMeaningfulSentence_helper(self.__isOneWordSentence, sentenceLength, doc)):
+            return False
+
+        if(not self.__isMeaningfulSentence_helper(self.__isOnlyNumberAndPunctuation, sentenceLength, doc)):
+            return False
+
+        return True
+        
+    def __removeMeaninglessSentences_helper(self, line):
+        if (self.isMeaningfulSentence(line)):
             return line + os.linesep
         else:
-            print("NOT Meaningful: " + line)
             return ""
 
     def tokenizeSentences(self, raw_text):
