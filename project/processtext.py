@@ -10,13 +10,13 @@ class ProcessText():
 
     def __init__(self):
         self.processText()
-        
+
     def __removeWhitespace(self, line):
-            if line.strip():
-                line = line.strip()
-                return line + os.linesep
-            else:
-                return ""
+        if line.strip():
+            line = line.strip()
+            return line + os.linesep
+        else:
+            return ""
 
     def __isLikelyTitle(self, sentenceLength, token):
         return (sentenceLength <= 6 and (token.pos_ == "ADJ" or token.pos_ == "ADP" or token.pos_ == "PROPN" or token.pos_ == "NUM" or token.pos_ == "ADV"))
@@ -25,21 +25,21 @@ class ProcessText():
         return (sentenceLength <= 1)
 
     def __isOnlyNumberAndPunctuation(self, sentenceLength, token):
-        return (token.pos_ == "NUM"  or token.pos_ == "PUNCT")
+        return (token.pos_ == "NUM" or token.pos_ == "PUNCT")
 
     def __isMeaningfulSentence_helper(self, func, sentenceLength, doc):
 
         flag = True
-        
+
         for token in doc:
+            print("\t Scanning " + token.text + " (" + token.pos_ + ")")
             if (func(sentenceLength, token)):
                 flag = False
             else:
                 flag = True
                 break
-        
+
         return flag
-            
 
     def isMeaningfulSentence(self, line):
         nlp = en_core_web_sm.load()
@@ -47,19 +47,21 @@ class ProcessText():
         words = [[] for token in doc]
         sentenceLength = len(words)
 
-        flag = True
-
         if(not self.__isMeaningfulSentence_helper(self.__isLikelyTitle, sentenceLength, doc)):
+            print(line + " IS NOT meaningful (title)")
             return False
 
         if(not self.__isMeaningfulSentence_helper(self.__isOneWordSentence, sentenceLength, doc)):
+            print(line + " IS NOT meaningful (one word)")
             return False
 
         if(not self.__isMeaningfulSentence_helper(self.__isOnlyNumberAndPunctuation, sentenceLength, doc)):
+            print(line + " IS NOT meaningful (numbers and punct)")
             return False
 
+        print(line + " is meaningful")
         return True
-        
+
     def __removeMeaninglessSentences_helper(self, line):
         if (self.isMeaningfulSentence(line)):
             return line + os.linesep
@@ -91,6 +93,6 @@ class ProcessText():
 
     def removeMeaninglessSentences(self, output_contents):
         new_output_lines = ""
-        for line in iter(output_contents.splitlines()): 
+        for line in iter(output_contents.splitlines()):
             new_output_lines += self.__removeMeaninglessSentences_helper(line)
         return new_output_lines

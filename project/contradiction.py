@@ -47,7 +47,8 @@ def print_parse_info(nlp, sent):
 
     unicode_type = unicode if sys.version_info[0] < 3 else str
     assert type(sent) is unicode_type
-# Parse our sentence.
+
+    # Parse our sentence.
     doc = nlp(sent)
 
     # Build a list of arrow heights (distance from tokens) per token.
@@ -94,11 +95,8 @@ def print_parse_info(nlp, sent):
     num_arrows_left = len(arrows)
     while num_arrows_left > 0:
 
-        print("***********************************")
-        print(str(arrows_with_deps))
-        print("***********************************")
-
-        assert len(arrows_with_deps[0])
+        if (not len(arrows_with_deps[0])):
+            return
 
         arrow_index = arrows_with_deps[0].pop()
         arrow = arrows[arrow_index]
@@ -156,7 +154,7 @@ def print_parse_info(nlp, sent):
                  'es': u'┌',
                  'enw': u'┴',
                  'ensw': u'┼',
-                 'ens' : u'├',
+                 'ens': u'├',
                  'esw': u'┬'}
 
     # Convert the character lists into strings.
@@ -186,12 +184,14 @@ def antysyn(word):
     # print("Synonym:",set(synonyms))
     print("Antonym:", set(antonyms))
 
-## TO-DO Rename function 
+# TO-DO Rename function
+
+
 def exec(sent1, sent2):
-    
+
     #sent1 = "I slept till noon."
-        # TO-DO (test): #sent1 = "I slept until early in the morning."
-            # Check if "slept" is antonym for "woke" and that is why it is popping up as a contradicition
+    # TO-DO (test): #sent1 = "I slept until early in the morning."
+    # Check if "slept" is antonym for "woke" and that is why it is popping up as a contradicition
     #sent2 = "I woke up early in the morning."
 
     verb1 = ""
@@ -206,7 +206,7 @@ def exec(sent1, sent2):
     print_parse_info(nlp, sent1)
     print("\n")
     print_parse_info(nlp, sent2)
-    
+
     # Processing sentence 1
     for token in doc1:
         if(token.dep_ == "neg"):
@@ -244,7 +244,7 @@ def exec(sent1, sent2):
 
     if contr_tracker == 1:
         print("\n", "->", verb1.upper(), "and",
-            verb2.upper(), "can't happen simultaneously.")
+              verb2.upper(), "can't happen simultaneously.")
         print("->Antonymity/Negation contradiction FOUND.")
     else:
         print("\n->Antonymity/Negation contradiction NOT found.")
@@ -256,12 +256,14 @@ def exec(sent1, sent2):
 
     # Function for checking negation
 
+
 def checknegationcontradiction(antonym_tracker, negdoc1, negdoc2):
     temp_var = negdoc1+negdoc2+antonym_tracker
     if(temp_var % 2 != 0 and temp_var < 3):
         return 1
     else:
         return 0
+
 
 def check_words(doc):
     merged_word = ""
@@ -358,4 +360,3 @@ contr_tracker = checknegationcontradiction(antonym_tracker, negdoc1, negdoc2)
 # Finding numerical mismatch
 checklist_more = ['more than ', 'greater than ', 'above']
 checklist_less = ['less than ', 'lesser than ', 'below']
-
