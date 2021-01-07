@@ -38,7 +38,7 @@ language-selector==0.1
 launchpadlib==1.10.13
 lazr.restfulclient==0.14.2
 lazr.uri==1.0.3
-lxml==4.5.2
+lxml==4.6.2
 MarkupSafe==1.1.0
 more-itertools==4.2.0
 murmurhash==1.0.2
