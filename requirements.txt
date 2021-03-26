@@ -64,7 +64,7 @@ pyrsistent==0.15.5
 pyserial==3.4
 python-apt==2.0.0
 python-debian===0.1.36ubuntu1
-PyYAML==5.3.1
+PyYAML==5.4
 queuelib==1.5.0
 regex==2020.7.14
 requests==2.22.0
