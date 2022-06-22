@@ -44,7 +44,7 @@ more-itertools==4.2.0
 murmurhash==1.0.2
 netifaces==0.10.4
 nltk==3.5
-numpy==1.19.1
+numpy==1.22.0
 oauthlib==3.1.0
 parsel==1.6.0
 pbr==5.4.5
